@@ -32,6 +32,7 @@
         function login(event){
         event.target.classList.add('is-loading');
         let username = document.getElementById('username').value
+        let password = document.getElementById('password').value
         axios
             .post("https://mp-authentication-server.herokuapp.com/admin/login",
                 {"adminID":document.getElementById('username').value,"password":document.getElementById('password').value},
@@ -42,6 +43,7 @@
                     window.localStorage.setItem("usu_access_token", response.data.data.accessToken);
                     window.localStorage.setItem("usu_refresh_token", response.data.data.refreshToken);
                     window.localStorage.setItem("usu_username", username);
+                    window.localStorage.setItem("usu_password", password);
                     window.location.href = "{{route('app.dashboard')}}";
                 }
             });

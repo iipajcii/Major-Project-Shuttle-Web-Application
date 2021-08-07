@@ -17,10 +17,12 @@
         <div class="column is-2" id='navigation' style="border-right: solid #ddd 1px;">
             <div class="w-100 p-4 m-0 has-text-weight-bold has-text-primary" data-view="home" onclick="changeView(this)"><i class="fas fa-home"></i>&nbsp;&nbsp;Home</div>
             <div class="w-100 p-4 m-0 has-text-weight-bold" data-view="map" onclick="changeView(this); map.resizeMap()"><i class="fas fa-map"></i>&nbsp;&nbsp;Map</div>
-            <div class="w-100 p-4 m-0 has-text-weight-bold" data-view="register" onclick="changeView(this)"><i class="fas fa-file-signature"></i>&nbsp;&nbsp;Register</div>
+            <div class="w-100 p-4 m-0 has-text-weight-bold" data-view="register" onclick="changeView(this)"><i class="fas fa-file-signature"></i>&nbsp;&nbsp;Forms</div>
             <div class="w-100 p-4 m-0 has-text-weight-bold" data-view="routes" onclick="changeView(this);"><i class="fas fa-map"></i>&nbsp;&nbsp;Routes</div>
             <div class="w-100 p-4 m-0 has-text-weight-bold" data-view="vehicles" onclick="changeView(this)"><i class="fas fa-bus-alt"></i>&nbsp;&nbsp;Vehicles</div>
             <div class="w-100 p-4 m-0 has-text-weight-bold" data-view="students" onclick="changeView(this)"><i class="fas fa-user-cog"></i>&nbsp;&nbsp;Students</div>
+            <div class="w-100 p-4 m-0 has-text-weight-bold" data-view="drivers" onclick="changeView(this)"><i class="fas fa-user-cog"></i>&nbsp;&nbsp;Drivers</div>
+            <div class="w-100 p-4 m-0 has-text-weight-bold" data-view="owners" onclick="changeView(this)"><i class="fas fa-user-cog"></i>&nbsp;&nbsp;Owners</div>
             <div class="w-100 p-4 m-0 has-text-weight-bold" data-view="contracts" onclick="changeView(this)"><i class="fas fa-file-contract"></i>&nbsp;&nbsp;Contracts</div>
             <div class="w-100 p-4 m-0 has-text-weight-bold" data-view="payments" onclick="changeView(this)"><i class="fas fa-file-invoice-dollar"></i>&nbsp;&nbsp;Payments</div>
             <div class="w-100 p-4 m-0 has-text-weight-bold" data-view="reports" onclick="changeView(this)"><i class="fas fa-file-csv"></i>&nbsp;&nbsp;Reports</div>
@@ -173,12 +175,6 @@
                                     <label class="label">Phone Number</label>
                                     <div class="control">
                                         <input ref="phoneNumber" class="input" type="tel" placeholder="e.g. 876-123-4567"  pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}">
-                                    </div>
-                                </div>
-                                <div class="field">
-                                    <label class="label">Tax Registration Number</label>
-                                    <div class="control">
-                                        <input class="input" type="number" placeholder="e.g. 876-123-4567"  pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}">
                                     </div>
                                 </div>
                                 <div class="field">
@@ -515,6 +511,72 @@
                 </table>
             </div>
         </div>
+        <div id="drivers">
+            <div class="table-container">
+                <table id="driver-table" class="table has-text-centered is-bordered is-hoverable is-fullwidth" style=" white-space: nowrap;">
+                    <thead>
+                        <tr>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Phone Number</th>
+                            <th>Email Address</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Phone Number</th>
+                            <th>Email Address</th>
+                            <th>Actions</th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        <tr v-for="(driver, index) in drivers">
+                            <td style="vertical-align: middle;" v-html="driver.first_name"></td>
+                            <td style="vertical-align: middle;" v-html="driver.last_name"></td>
+                            <td style="vertical-align: middle;" v-html="driver.phone_number"></td>
+                            <td style="vertical-align: middle;" v-html="driver.email_address"></td>
+                            <td style="vertical-align: middle;"><button class="button is-small is-grey ml-1" @click="updateDriver(driver.driver_id)"><i class="fas fa-pen"></i></button><button class="button is-small is-grey ml-1" @click="confirmDelete(driver.driver_id)"><i class="fas fa-trash"></i></button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div id="owners">
+            <div class="table-container">
+                <table id="owner-table" class="table has-text-centered is-bordered is-hoverable is-fullwidth" style=" white-space: nowrap;">
+                    <thead>
+                        <tr>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Phone Number</th>
+                            <th>Email Address</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Phone Number</th>
+                            <th>Email Address</th>
+                            <th>Actions</th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        <tr v-for="(owner, index) in owners">
+                            <td style="vertical-align: middle;" v-html="owner.first_name"></td>
+                            <td style="vertical-align: middle;" v-html="owner.last_name"></td>
+                            <td style="vertical-align: middle;" v-html="owner.phone_number"></td>
+                            <td style="vertical-align: middle;" v-html="owner.email_address"></td>
+                            <td style="vertical-align: middle;"><button class="button is-small is-grey ml-1" @click="updateOwner(owner.owner_id)"><i class="fas fa-pen"></i></button><button class="button is-small is-grey ml-1" @click="confirmDelete(owner.owner_id)"><i class="fas fa-trash"></i></button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
         <div id="contracts">
             <div class="table-container">
                 <table id="contracts-table" class="table has-text-centered is-bordered is-hoverable is-fullwidth" style=" white-space: nowrap;">
@@ -733,6 +795,7 @@
                             window.localStorage.setItem("usu_access_token","");
                             window.localStorage.setItem("usu_refresh_token","");
                             window.localStorage.setItem("usu_username","");
+                            window.localStorage.setItem("usu_password","");
                             window.location.href = window.location.protocol + "//" + window.location.host + "/";
                         })
                 }
@@ -753,6 +816,7 @@
             },
             methods: {
                 confirmDelete(id) {
+                    let _this = this;
                     this.$buefy.dialog.prompt({
                         title: 'Deleting Vehicle',
                         message: 'Type <b><i>your account password</i></b> to permanently delete this vehicle? This action cannot be undone!',
@@ -767,8 +831,6 @@
                         type: 'is-danger',
                         hasIcon: true,
                         onConfirm(value){
-                            this.$buefy.toast.open('Vehicle deleted!');
-
                             axios({
                                 method: 'delete',
                                 url: `https://mp-app-server.herokuapp.com/vehicle/${id}`,
@@ -779,12 +841,14 @@
                                 data: {
                                 adminPassword:value
                                 }
-                                })
-                                .then(function(response){
+                            })
+                            .then(function(response){
                                 _this.vehicles = response.data.data;
+                                _this.$buefy.toast.open('Vehicle deleted!');
                                 _this.getVehicles();
                             })
                             .catch(function(error){
+                                _this.$buefy.toast.open({message:'Error: Likely problem - Something depends on this vehicle record',type:"is-danger"});
                                 window.utility.refreshToken();
                             })
                         }
@@ -882,9 +946,11 @@
                               }
                             })
                             .then(function(response){
+                                _this.$buefy.toast.open('Vehicle Updated!');
                                 _this.getVehicles();
                             })
                             .catch(function(error){
+                                _this.$buefy.toast.open({message:'Error: Likely problem - Something depends on this vehicle record',type:"is-danger"});
                                 window.utility.refreshToken();
                             })
                         }
@@ -928,6 +994,7 @@
             },
             methods: {
                 confirmDelete(id) {
+                    let _this = this;
                     this.$buefy.dialog.prompt({
                         title: 'Deleting Student',
                         message: 'Type <b><i>your account password</i></b> to permanently delete this student? This action cannot be undone!',
@@ -942,7 +1009,6 @@
                         hasIcon: true,
                         confirmText: 'Delete Student',
                         onConfirm(value){
-                            this.$buefy.toast.open('Student deleted!');
                             axios({
                               method: 'delete',
                               url: `https://mp-app-server.herokuapp.com/student/${id}`,
@@ -955,10 +1021,12 @@
                               }
                             })
                             .then(function(response){
+                                _this.$buefy.toast.open('Student deleted!');
                                 _this.students = response.data.data;
                                 _this.getStudents();
                             })
                             .catch(function(error){
+                                _this.$buefy.toast.open({message:'Error: Likely problem - Something depends on this student record',type:'is-danger'});
                                 window.utility.refreshToken();
                             })
                         }
@@ -1013,7 +1081,7 @@
                         type: 'is-success',
                         confirmText: 'Update Student',
                         onConfirm(value){
-                            this.$buefy.toast.open('Student Updated!');
+
                             axios({
                               method: 'put',
                               url: `https://mp-app-server.herokuapp.com/student/${id}`,
@@ -1026,15 +1094,16 @@
                                 lastName: window.student.last_name,
                                 phoneNumber: window.student.phone_number,
                                 emailAddress: window.student.email_address,
-                                password: 'password'
+                                password: window.localStorage.getItem("usu_password")
                               }
                             })
                             .then(function(response){
-                                _this.$buefy.dialog.alert('Student Updated!')
+                                _this.$buefy.toast.open('Student Updated!');
                                 _this.getStudents();
                             })
                             .catch(function(error){
                                 window.utility.refreshToken();
+                                _this.$buefy.toast.open({message:'Error: Likely problem - Something depends on this student record',type:"is-danger"});
                             })
                         }
                     })
@@ -1053,6 +1122,310 @@
                         )
                         .then(function(response){
                             _this.students = response.data.data;
+                        })
+                        .catch(function(error){
+                            window.utility.refreshToken();
+                        })
+                }
+            }
+        });
+
+        var driversVue = new Vue({
+            el: "#driver-table",
+            data(){
+                return {
+                    drivers:null,
+                    driver:null
+                }
+            },
+            mounted(){
+                window.driver = {};
+                let _this = this;
+                this.getDrivers();
+            },
+            methods: {
+                confirmDelete(id) {
+                    let _this = this;
+                    this.$buefy.dialog.prompt({
+                        title: 'Deleting Driver',
+                        message: 'Type <b><i>your account password</i></b> to permanently delete this driver? This action cannot be undone!',
+                        inputAttrs: {
+                            placeholder: 'e.g. your_password',
+                            maxlength: 20,
+                            type: 'password',
+                            autocomplete:"off"
+                        },
+                        trapFocus: true,
+                        type: 'is-danger',
+                        hasIcon: true,
+                        confirmText: 'Delete Driver',
+                        onConfirm(value){
+                            axios({
+                              method: 'delete',
+                              url: `https://mp-app-server.herokuapp.com/driver/${id}`,
+                              headers:{
+                                "Content-type":"application/json",
+                                "Authorization": `Bearer ${window.localStorage.getItem("usu_access_token")}`
+                              },
+                              data: {
+                                adminPassword:value
+                              }
+                            })
+                            .then(function(response){
+                                console.log(response);
+                                _this.$buefy.toast.open('Driver deleted!');
+                                _this.drivers = response.data.data;
+                                _this.getDrivers();
+                            })
+                            .catch(function(error){
+                                console.log('error');
+                                console.log(error);
+                                _this.$buefy.toast.open({message:'Error: Likely problem - Something depends on this driver record',type:"is-danger"});
+                                window.utility.refreshToken();
+                            })
+                        }
+                    })
+                },
+                updateDriver(id){
+                    let driver = null;
+                    let _this = this;
+                    for(let counter = 0, count = this.drivers.length; counter < count; counter++){
+                        if(this.drivers[counter].driver_id == id){
+                            driver = this.drivers[counter];
+                            window.driver = this.drivers[counter];
+                            break;
+                        }
+                    }
+                    this.$buefy.dialog.confirm({
+                        title: 'Update Driver',
+                        message: `
+                            <div class="field">
+                                <label class="label">First Name</label>
+                                <div class="control">
+                                    <input class="input" oninput="window.driver.first_name = this.value " value="${driver.first_name}" type="text" placeholder="Text input">
+                                </div>
+                            </div>
+                            <div class="field">
+                                <label class="label">Last Name</label>
+                                <div class="control">
+                                    <input class="input" oninput="window.driver.last_name = this.value " value="${driver.last_name}" type="text" placeholder="Text input">
+                                </div>
+                            </div>
+                            <div class="field">
+                                <label class="label">Phone Number</label>
+                                <div class="control">
+                                    <input class="input" oninput="window.driver.phone_number = this.value " value="${driver.phone_number}" type="text" placeholder="Text input">
+                                </div>
+                            </div>
+                            <div class="field">
+                                <label class="label">Email Address</label>
+                                <div class="control">
+                                    <input class="input" oninput="window.driver.email_address = this.value " value="${driver.email_address}" type="text" placeholder="Text input">
+                                </div>
+                            </div>
+                        `,
+                        inputAttrs: {
+                            placeholder: 'e.g. your_password',
+                            maxlength: 20,
+                            type: 'password',
+                            autocomplete:"off"
+                        },
+                        size: 'is-medium',
+                        trapFocus: true,
+                        type: 'is-success',
+                        confirmText: 'Update Driver',
+                        onConfirm(value){
+                            this.$buefy.toast.open('Driver Updated!');
+                            axios({
+                                method: 'put',
+                                url: `https://mp-app-server.herokuapp.com/driver/${id}`,
+                                headers:{
+                                    "Content-type":"application/json",
+                                    "Authorization": `Bearer ${window.localStorage.getItem("usu_access_token")}`
+                                },
+                                data: {
+                                    firstName: window.driver.first_name,
+                                    lastName: window.driver.last_name,
+                                    phoneNumber: window.driver.phone_number,
+                                    emailAddress: window.driver.email_address,
+                                    password: window.localStorage.getItem("usu_password")
+                                }
+                            })
+                            .then(function(response){
+                                _this.$buefy.toast.open('Driver Updated!');
+                                _this.getDrivers();
+                            })
+                            .catch(function(error){
+                                _this.$buefy.toast.open({message:'Error: Likely problem - Something depends on this driver record',type:"is-danger"});
+                                window.utility.refreshToken();
+                            })
+                        }
+                    })
+                },
+                getDriversPromise(){
+                    return axios.get("https://mp-app-server.herokuapp.com/driver",{headers: {"Content-type":"application/json","Authorization": `Bearer ${window.localStorage.getItem("usu_access_token")}`}})
+                },
+                getDrivers(){
+                    let _this = this;
+                    axios
+                        .get("https://mp-app-server.herokuapp.com/driver",
+                            {headers: {
+                                "Content-type":"application/json",
+                                "Authorization": `Bearer ${window.localStorage.getItem("usu_access_token")}`
+                            }}
+                        )
+                        .then(function(response){
+                            _this.drivers = response.data.data;
+                        })
+                        .catch(function(error){
+                            window.utility.refreshToken();
+                        });
+                }
+            }
+        });
+
+        var ownersVue = new Vue({
+            el: "#owner-table",
+            data(){
+                return {
+                    owners:null,
+                    owner:null
+                }
+            },
+            mounted(){
+                window.owner = {};
+                let _this = this;
+                this.getOwners();
+            },
+            methods: {
+                confirmDelete(id) {
+                    let _this = this;
+                    this.$buefy.dialog.prompt({
+                        title: 'Deleting Owner',
+                        message: 'Type <b><i>your account password</i></b> to permanently delete this owner? This action cannot be undone!',
+                        inputAttrs: {
+                            placeholder: 'e.g. your_password',
+                            maxlength: 20,
+                            type: 'password',
+                            autocomplete:"off"
+                        },
+                        trapFocus: true,
+                        type: 'is-danger',
+                        hasIcon: true,
+                        confirmText: 'Delete Owner',
+                        onConfirm(value){
+                            axios({
+                              method: 'delete',
+                              url: `https://mp-app-server.herokuapp.com/owner/${id}`,
+                              headers:{
+                                "Content-type":"application/json",
+                                "Authorization": `Bearer ${window.localStorage.getItem("usu_access_token")}`
+                              },
+                              data: {
+                                adminPassword:value
+                              }
+                            })
+                            .then(function(response){
+                                _this.$buefy.toast.open('Owner deleted!');
+                                _this.owners = response.data.data;
+                                _this.getOwners();
+                            })
+                            .catch(function(error){
+                                _this.$buefy.toast.open({message:'Error: Likely problem - Something depends on this owner record',type:"is-danger"});
+                                window.utility.refreshToken();
+                            })
+                        }
+                    })
+                },
+                updateOwner(id){
+                    let _this = this;
+                    let owner = null;
+                    for(let counter = 0, count = this.owners.length; counter < count; counter++){
+                        if(this.owners[counter].owner_id == id){
+                            owner = this.owners[counter];
+                            window.owner = this.owners[counter];
+                            break;
+                        }
+                    }
+                    this.$buefy.dialog.confirm({
+                        title: 'Update Owner',
+                        message: `
+                            <div class="field">
+                                <label class="label">First Name</label>
+                                <div class="control">
+                                    <input class="input" oninput="window.owner.first_name = this.value " value="${owner.first_name}" type="text" placeholder="Text input">
+                                </div>
+                            </div>
+                            <div class="field">
+                                <label class="label">Last Name</label>
+                                <div class="control">
+                                    <input class="input" oninput="window.owner.last_name = this.value " value="${owner.last_name}" type="text" placeholder="Text input">
+                                </div>
+                            </div>
+                            <div class="field">
+                                <label class="label">Phone Number</label>
+                                <div class="control">
+                                    <input class="input" oninput="window.owner.phone_number = this.value " value="${owner.phone_number}" type="text" placeholder="Text input">
+                                </div>
+                            </div>
+                            <div class="field">
+                                <label class="label">Email Address</label>
+                                <div class="control">
+                                    <input class="input" oninput="window.owner.email_address = this.value " value="${owner.email_address}" type="text" placeholder="Text input">
+                                </div>
+                            </div>
+                        `,
+                        inputAttrs: {
+                            placeholder: 'e.g. your_password',
+                            maxlength: 20,
+                            type: 'password',
+                            autocomplete:"off"
+                        },
+                        size: 'is-medium',
+                        trapFocus: true,
+                        type: 'is-success',
+                        confirmText: 'Update Owner',
+                        onConfirm(value){
+                            axios({
+                              method: 'put',
+                              url: `https://mp-app-server.herokuapp.com/owner/${id}`,
+                              headers:{
+                                "Content-type":"application/json",
+                                "Authorization": `Bearer ${window.localStorage.getItem("usu_access_token")}`
+                              },
+                              data: {
+                                firstName: window.owner.first_name,
+                                lastName: window.owner.last_name,
+                                phoneNumber: window.owner.phone_number,
+                                emailAddress: window.owner.email_address,
+                                password: window.localStorage.getItem("usu_password")
+                            }
+                            })
+                            .then(function(response){
+                                _this.$buefy.toast.open('Owner Updated!');
+                                _this.getOwners();
+                            })
+                            .catch(function(error){
+                                _this.$buefy.toast.open({message:'Error: Likely problem - Something depends on this owner record',type:"is-danger"});
+                                window.utility.refreshToken();
+                            })
+                        }
+                    })
+                },
+                getOwnersPromise(){
+                    return axios.get("https://mp-app-server.herokuapp.com/owner",{headers: {"Content-type":"application/json","Authorization": `Bearer ${window.localStorage.getItem("usu_access_token")}`}})
+                },
+                getOwners(){
+                    let _this = this;
+                    axios
+                        .get("https://mp-app-server.herokuapp.com/owner",
+                            {headers: {
+                                "Content-type":"application/json",
+                                "Authorization": `Bearer ${window.localStorage.getItem("usu_access_token")}`
+                            }}
+                        )
+                        .then(function(response){
+                            _this.owners = response.data.data;
                         })
                         .catch(function(error){
                             window.utility.refreshToken();
@@ -1145,6 +1518,11 @@
                         )
                         .then(function(response){
                             _this.$buefy.dialog.alert('Student Registered!')
+                            _this.$refs.id.value = "";
+                            _this.$refs.firstName.value = "";
+                            _this.$refs.lastName.value = "";
+                            _this.$refs.email.value = "";
+                            _this.$refs.phoneNumber.value = "";
                         })
                         .catch(function(error){
                             window.utility.refreshToken();
@@ -1182,6 +1560,10 @@
                         )
                         .then(function(response){
                             _this.$buefy.dialog.alert('Driver Registered!')
+                            _this.$refs.firstName.value;
+                            _this.$refs.lastName.value;
+                            _this.$refs.email.value;
+                            _this.$refs.phoneNumber.value;
                         })
                         .catch(function(error){
                             window.utility.refreshToken();
@@ -1263,7 +1645,14 @@
                             }},
                         )
                         .then(function(response){
-                            _this.$buefy.dialog.alert('Vehicle Registered!')
+                            _this.$buefy.dialog.alert('Vehicle Registered!');
+                            _this.$refs.plateNumber.value = ""
+                            _this.$refs.ownerID.value = ""
+                            _this.$refs.driverID.value = ""
+                            _this.$refs.capacity.value = ""
+                            _this.$refs.make.value = ""
+                            _this.$refs.model.value = ""
+                            _this.$refs.colour.value = ""
                         })
                         .catch(function(error){
                             window.utility.refreshToken();
@@ -1298,7 +1687,11 @@
                             }},
                         )
                         .then(function(response){
-                            _this.$buefy.dialog.alert('Owner Registered!')
+                            _this.$buefy.dialog.alert('Owner Registered!');
+                            _this.$refs.firstName.value = "";
+                            _this.$refs.lastName.value = "";
+                            _this.$refs.email.value = "";
+                            _this.$refs.phoneNumber.value = "";
                         })
                         .catch(function(error){
                             window.utility.refreshToken();
@@ -1422,6 +1815,7 @@
             },
             methods: {
                 confirmDelete(id) {
+                    let _this = this;
                     this.$buefy.dialog.prompt({
                         title: 'Deleting Contract',
                         message: 'Type <b><i>your account password</i></b> to permanently delete this student? This action cannot be undone!',
@@ -1436,7 +1830,6 @@
                         type: 'is-danger',
                         hasIcon: true,
                         onConfirm(value){
-                            this.$buefy.toast.open('Contract deleted!');
                             axios({
                                 method: 'delete',
                                 url: `https://mp-app-server.herokuapp.com/contract/${id}`,
@@ -1450,8 +1843,10 @@
                             })
                             .then(function(response){
                                 _this.getContracts();
+                                _this.$buefy.toast.open('Contract deleted!');
                             })
                             .catch(function(error){
+                                _this.$buefy.toast.open({message:'Error: Likely problem - Something depends on this Contract record',type:"is-danger"});
                                 window.utility.refreshToken();
                             })
                         }
@@ -1542,7 +1937,7 @@
                         type: 'is-success',
                         confirmText: 'Update Contract',
                         onConfirm(value){
-                            this.$buefy.toast.open('Contract Updated!');
+
                             axios({
                               method: 'put',
                               url: `https://mp-app-server.herokuapp.com/contract/${id}`,
@@ -1565,8 +1960,10 @@
                             })
                             .then(function(response){
                                 _this.getContracts();
+                                _this.$buefy.toast.open('Contract Updated!');
                             })
                             .catch(function(error){
+                                _this.$buefy.toast.open({message:'Error: Likely problem - Something depends on this Contract record',type:"is-danger"});
                                 window.utility.refreshToken();
                             })
                         }
@@ -1620,6 +2017,7 @@
             },
             methods: {
                 confirmDelete(id) {
+                    let _this = this;
                     this.$buefy.dialog.prompt({
                         title: 'Deleting Route',
                         message: 'Type <b><i>your account password</i></b> to permanently delete this route? This action cannot be undone!',
@@ -1692,7 +2090,6 @@
                         type: 'is-success',
                         confirmText: 'Update Route',
                         onConfirm(value){
-                            this.$buefy.toast.open('Route Updated!');
                             axios({
                               method: 'put',
                               url: `https://mp-app-server.herokuapp.com/route/${id}`,
@@ -1707,8 +2104,10 @@
                             })
                             .then(function(response){
                                 _this.getContracts();
+                                _this.$buefy.toast.open('Route Updated!');
                             })
                             .catch(function(error){
+                                _this.$buefy.toast.open({message:'Error: Likely problem - Something depends on this Route record',type:"is-danger"});
                                 window.utility.refreshToken();
                             })
                         }
@@ -1754,6 +2153,7 @@
             },
             methods:{
                 createContract(){
+                    let _this = this;
                     let contractNumber = this.$refs.contractNumber.value; console.log(this.$refs.contractNumber.value);
                     let prNumber = this.$refs.prNumber.value; console.log(this.$refs.prNumber.value);
                     let procurementOfficer = this.$refs.procurementOfficer.value; console.log(this.$refs.procurementOfficer.value);
@@ -1785,7 +2185,17 @@
                             }},
                         )
                         .then(function(response){
-                            console.log(response);
+                            _this.$buefy.dialog.alert('Contract Created!')
+                            _this.$refs.contractNumber.value = "";
+                            _this.$refs.prNumber.value = "";
+                            _this.$refs.procurementOfficer.value = "";
+                            _this.$refs.contractor.value = "";
+                            _this.$refs.issueDate.value = "";
+                            _this.$refs.expirationDate.value = "";
+                            _this.$refs.dueDate.value = "";
+                            _this.$refs.routeID.value = "";
+                            _this.$refs.vehicleID.value = "";
+                            _this.$refs.ownerID.value = "";
                         })
                         .catch(function(error){
                             window.utility.refreshToken();
@@ -1828,6 +2238,9 @@
                         )
                         .then(function(response){
                             _this.$buefy.dialog.alert('Route Created!');
+                            _this.$refs.startingLocation.value = "";
+                            _this.$refs.destination.value = "";
+                            _this.$refs.fee.value = "";
                         })
                         .catch(function(error){
                             window.utility.refreshToken();
@@ -1913,6 +2326,11 @@
                         )
                         .then(function(response){
                             _this.$buefy.dialog.alert('Transaction Created!');
+                            _this.$refs.done_by.value = "";
+                            _this.$refs.amount.value = "";
+                            _this.$refs.payment_type.value = "";
+                            _this.$refs.description.value = "";
+                            _this.$refs.contractID.value = "";
                         })
                         .catch(function(error){
                             window.utility.refreshToken();
@@ -1948,6 +2366,8 @@
         setInterval(function(){dashboard.getRouteCount();console.log("Get Routes Interval");},9000);
         setInterval(function(){vehicleVue.getVehicles();console.log("Get Vehicles Interval");},9000);
         setInterval(function(){studentsVue.getStudents();console.log("Get Students Interval");},9000);
+        setInterval(function(){driversVue.getDrivers();console.log("Get Drivers Interval");},9000);
+        setInterval(function(){ownersVue.getOwners();console.log("Get Owners Interval");},9000);
         setInterval(function(){vehicleFormVue.getDrivers();console.log("Get Drivers Interval")}, 9000);
         setInterval(function(){vehicleFormVue.getOwners();console.log("Get Owners Interval")}, 9000);
         setInterval(function(){contractsVue.getContracts();console.log("Get Contracts Interval");},9000);
@@ -1960,6 +2380,8 @@
         studentsVue.getStudents();
         routeTable.getRoutes();
         paymentTable.getPayments();
+        ownersVue.getOwners();
+        driversVue.getDrivers();
     </script>
     <style type="text/css">
         html,body: {
