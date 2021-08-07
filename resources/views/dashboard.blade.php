@@ -17,7 +17,7 @@
         <div class="column is-2" id='navigation' style="border-right: solid #ddd 1px;">
             <div class="w-100 p-4 m-0 has-text-weight-bold has-text-primary" data-view="home" onclick="changeView(this)"><i class="fas fa-home"></i>&nbsp;&nbsp;Home</div>
             <div class="w-100 p-4 m-0 has-text-weight-bold" data-view="map" onclick="changeView(this); map.resizeMap()"><i class="fas fa-map"></i>&nbsp;&nbsp;Map</div>
-            <div class="w-100 p-4 m-0 has-text-weight-bold" data-view="register" onclick="changeView(this)"><i class="fas fa-file-signature"></i>&nbsp;&nbsp;Register</div>
+            <div class="w-100 p-4 m-0 has-text-weight-bold" data-view="register" onclick="changeView(this)"><i class="fas fa-file-signature"></i>&nbsp;&nbsp;Forms</div>
             <div class="w-100 p-4 m-0 has-text-weight-bold" data-view="routes" onclick="changeView(this);"><i class="fas fa-map"></i>&nbsp;&nbsp;Routes</div>
             <div class="w-100 p-4 m-0 has-text-weight-bold" data-view="vehicles" onclick="changeView(this)"><i class="fas fa-bus-alt"></i>&nbsp;&nbsp;Vehicles</div>
             <div class="w-100 p-4 m-0 has-text-weight-bold" data-view="students" onclick="changeView(this)"><i class="fas fa-user-cog"></i>&nbsp;&nbsp;Students</div>
@@ -795,6 +795,7 @@
                             window.localStorage.setItem("usu_access_token","");
                             window.localStorage.setItem("usu_refresh_token","");
                             window.localStorage.setItem("usu_username","");
+                            window.localStorage.setItem("usu_password","");
                             window.location.href = window.location.protocol + "//" + window.location.host + "/";
                         })
                 }
