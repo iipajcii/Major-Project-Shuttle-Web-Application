@@ -16,10 +16,9 @@
     <section class="columns">
         <div class="column is-2" id='navigation' style="border-right: solid #ddd 1px;">
             <div class="w-100 p-4 m-0 has-text-weight-bold has-text-primary" data-view="home" onclick="changeView(this)"><i class="fas fa-home"></i>&nbsp;&nbsp;Home</div>
-            <div class="w-100 p-4 m-0 has-text-weight-bold" data-view="booking" onclick="changeView(this);"><i class="fas fa-book"></i>&nbsp;&nbsp;Bookings</div>
             <div class="w-100 p-4 m-0 has-text-weight-bold" data-view="map" onclick="changeView(this); map.resizeMap()"><i class="fas fa-map"></i>&nbsp;&nbsp;Map</div>
-            <div class="w-100 p-4 m-0 has-text-weight-bold" data-view="routes" onclick="changeView(this);"><i class="fas fa-map"></i>&nbsp;&nbsp;Routes</div>
             <div class="w-100 p-4 m-0 has-text-weight-bold" data-view="register" onclick="changeView(this)"><i class="fas fa-file-signature"></i>&nbsp;&nbsp;Register</div>
+            <div class="w-100 p-4 m-0 has-text-weight-bold" data-view="routes" onclick="changeView(this);"><i class="fas fa-map"></i>&nbsp;&nbsp;Routes</div>
             <div class="w-100 p-4 m-0 has-text-weight-bold" data-view="vehicles" onclick="changeView(this)"><i class="fas fa-bus-alt"></i>&nbsp;&nbsp;Vehicles</div>
             <div class="w-100 p-4 m-0 has-text-weight-bold" data-view="users" onclick="changeView(this)"><i class="fas fa-user-cog"></i>&nbsp;&nbsp;Users</div>
             <div class="w-100 p-4 m-0 has-text-weight-bold" data-view="contracts" onclick="changeView(this)"><i class="fas fa-file-contract"></i>&nbsp;&nbsp;Contracts</div>
@@ -44,7 +43,7 @@
                             <div class="content">
                                 <h1 class="is-size-2"><i class="fas fa-road"></i></h1>
                                 <h1 class="is-size-4 has-text-weight-bold">Current Routes</h1>
-                                <p class="is-size-5">12</p>
+                                <p class="is-size-5" v-html="routeCount"></p>
                             </div>
                           </div>
                         </div>
@@ -55,7 +54,7 @@
                             <div class="content">
                                 <h1 class="is-size-2"><i class="fas fa-bus"></i></h1>
                                 <h1 class="is-size-4 has-text-weight-bold">Total Vehicles</h1>
-                                <p class="is-size-5">31</p>
+                                <p class="is-size-5" v-html="vehicleCount"></p>
                             </div>
                           </div>
                         </div>
@@ -66,7 +65,7 @@
                             <div class="content">
                                 <h1 class="is-size-2"><i class="fas fa-user-graduate"></i></h1>
                                 <h1 class="is-size-4 has-text-weight-bold">Total Students</h1>
-                                <p class="is-size-5">1,342</p>
+                                <p class="is-size-5" v-html="studentCount"></p>
                             </div>
                           </div>
                         </div>
@@ -77,393 +76,361 @@
                             <div class="content">
                                 <h1 class="is-size-2"><i class="fas fa-user"></i></h1>
                                 <h1 class="is-size-4 has-text-weight-bold">Total Drivers</h1>
-                                <p class="is-size-5">29</p>
+                                <p class="is-size-5" v-html="driverCount"></p>
                             </div>
                           </div>
                         </div>
                     </div>
                 </div>
+                {{--
                 <div id="frequency-chart">
                     <canvas ref="vue-frequency-table" width="100%" min-height="400"></canvas>
                 </div>
+                --}}
             </div>
         </div>
     </section>
     {{-- Section where all the views are stored --}}
     <section style="display:none" id='views'>
-        <div id="booking" style="height:100%;">
-            <div class="table-container">
-                <table id="booking-table" class="table has-text-centered is-bordered is-hoverable is-fullwidth"  style=" white-space: nowrap;">
-                    <thead>
-                        <tr>
-                            <th>License Plate Number</th>
-                            <th>Image</th>
-                            <th>Vehicle Name</th>
-                            <th>Manufacturer</th>
-                            <th>Model</th>
-                            <th>Year</th>
-                            <th>Max Capacity</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tfoot>
-                        <tr>
-                            <th>License Plate Number</th>
-                            <th>Image</th>
-                            <th>Vehicle Name</th>
-                            <th>Manufacturer</th>
-                            <th>Model</th>
-                            <th>Year</th>
-                            <th>Max Capacity</th>
-                            <th>Actions</th>
-                        </tr>
-                    </tfoot>
-                    <tbody>
-                        <tr>
-                            <td style="vertical-align: middle;" >1</td>
-                            <td>2</td>
-                            <td>3</td>
-                            <td>4</td>
-                            <td>5</td>
-                            <td>6</td>
-                            <td>7</td>
-                            <td>8</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
         <div id="map" style="height:100%;">
             <div id='mapbox-map' style='width: 100%; min-height: 600px;' onload="this.style.width=100%;"></div>
         </div>
         <div id="register">
             <div class="columns w-100 is-variable is-1 is-multiline">
-                <div class="column is-3" data-form="student" onclick="changeForm(this)"><p class="button is-medium is-light has-text-centered w-100"><i class="fas fa-user-graduate"></i>&nbsp;&nbsp;Register Student</p></div>
-                <div class="column is-3" data-form="driver"  onclick="changeForm(this)"><p class="button is-medium is-light has-text-centered w-100"><i class="fas fa-id-badge"></i>&nbsp;&nbsp;Register Driver</p></div>
-                <div class="column is-3" data-form="owner"  onclick="changeForm(this)"><p class="button is-medium is-light has-text-centered w-100"><i class="fas fa-id-card"></i>&nbsp;&nbsp;Register Owner</p></div>
-                <div class="column is-3" data-form="vehicle" onclick="changeForm(this)"><p class="button is-medium is-light has-text-centered w-100"><i class="fas fa-bus"></i>&nbsp;&nbsp;Register Vehicle</p></div>
-                <div class="column is-3" data-form="contract" onclick="changeForm(this)"><p class="button is-medium is-light has-text-centered w-100"><i class="fas fa-file-contract"></i>&nbsp;&nbsp;Register Contract</p></div>
-                <div class="column is-3" data-form="route" onclick="changeForm(this)"><p class="button is-medium is-light has-text-centered w-100"><i class="fas fa-file-contract"></i>&nbsp;&nbsp;Register Route</p></div>
-                <div class="column is-3" data-form="payment" onclick="changeForm(this)"><p class="button is-medium is-light has-text-centered w-100"><i class="fas fa-file-contract"></i>&nbsp;&nbsp;Create Payment</p></div>
-            </div>
-            <div class="columns w-100 p-4" id='register-form'></div>
-            <div id='register-forms' style="display:none">
-                <form key="student" data-form="student" id="student-form">
-                    <div class="field">
-                        <label class="label">First Name</label>
-                        <div class="control">
-                            <input ref="firstName" class="input" type="text" placeholder="e.g Johnathan">
-                        </div>
+                <div class="column is-4">
+                    <div class="columns w-100 is-variable is-1 is-multiline">
+                        <div class="column is-full" data-form="student" onclick="changeForm(this)"><p class="button is-medium is-light has-text-centered w-100"><i class="fas fa-user-graduate"></i>&nbsp;&nbsp;Register Student</p></div>
+                        <div class="column is-full" data-form="driver"  onclick="changeForm(this)"><p class="button is-medium is-light has-text-centered w-100"><i class="fas fa-id-badge"></i>&nbsp;&nbsp;Register Driver</p></div>
+                        <div class="column is-full" data-form="owner"  onclick="changeForm(this)"><p class="button is-medium is-light has-text-centered w-100"><i class="fas fa-id-card"></i>&nbsp;&nbsp;Register Owner</p></div>
+                        <div class="column is-full" data-form="vehicle" onclick="changeForm(this)"><p class="button is-medium is-light has-text-centered w-100"><i class="fas fa-bus"></i>&nbsp;&nbsp;Register Vehicle</p></div>
+                        <div class="column is-full" data-form="contract" onclick="changeForm(this)"><p class="button is-medium is-light has-text-centered w-100"><i class="fas fa-file-contract"></i>&nbsp;&nbsp;Register Contract</p></div>
+                        <div class="column is-full" data-form="route" onclick="changeForm(this)"><p class="button is-medium is-light has-text-centered w-100"><i class="fas fa-file-contract"></i>&nbsp;&nbsp;Register Route</p></div>
+                        <div class="column is-full" data-form="payment" onclick="changeForm(this)"><p class="button is-medium is-light has-text-centered w-100"><i class="fas fa-file-contract"></i>&nbsp;&nbsp;Create Payment</p></div>
                     </div>
-                    <div class="field">
-                        <label class="label">Last Name</label>
-                        <div class="control">
-                            <input ref="lastName" class="input" type="text" placeholder="e.g Doberman">
-                        </div>
+                </div>
+                <div class="column is-offset-1 is-7">
+                    <div class="columns w-100 p-4" id='register-form'>
+                        <h1 class="has-text-centered has-text-grey is-size-4 w-100">The selected form will appear here</h1>
                     </div>
-                    <div class="field">
-                        <label class="label">School ID Number</label>
-                        <div class="control">
-                            <input ref="id" class="input" type="text" placeholder="e.g 180000">
-                        </div>
-                    </div>
-                    <div class="field">
-                        <label class="label">Email Address</label>
-                        <div class="control">
-                            <input ref="email" class="input" type="email" placeholder="e.g. johnathandoberman@email.com">
-                        </div>
-                    </div>
-                    <div class="field">
-                        <label class="label">Phone Number</label>
-                        <div class="control">
-                            <input ref="phoneNumber" class="input" type="tel" placeholder="e.g. 876-123-4567"  pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}">
-                        </div>
-                    </div>
-                    <div class="field">
-                        <div class="control">
-                            <input class="button is-primary" ref="registrationButton" @click="registerStudent" value="Submit">
-                        </div>
-                    </div>
-                </form>
+                        <div id='register-forms' style="display:none">
+                            <form key="student" data-form="student" id="student-form">
+                                <div class="field">
+                                    <label class="label">First Name</label>
+                                    <div class="control">
+                                        <input ref="firstName" class="input" type="text" placeholder="e.g Johnathan">
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label class="label">Last Name</label>
+                                    <div class="control">
+                                        <input ref="lastName" class="input" type="text" placeholder="e.g Doberman">
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label class="label">School ID Number</label>
+                                    <div class="control">
+                                        <input ref="id" class="input" type="text" placeholder="e.g 180000">
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label class="label">Email Address</label>
+                                    <div class="control">
+                                        <input ref="email" class="input" type="email" placeholder="e.g. johnathandoberman@email.com">
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label class="label">Phone Number</label>
+                                    <div class="control">
+                                        <input ref="phoneNumber" class="input" type="tel" placeholder="e.g. 876-123-4567"  pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}">
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <div class="control">
+                                        <input class="button is-primary" ref="registrationButton" @click="registerStudent" value="Submit">
+                                    </div>
+                                </div>
+                            </form>
 
-                <form key="driver" data-form="driver" id="driver-form">
-                    <div class="field">
-                        <label class="label">First Name</label>
-                        <div class="control">
-                            <input ref="firstName" class="input" type="text" placeholder="e.g Johnathan">
-                        </div>
-                    </div><div class="field">
-                        <label class="label">Last Name</label>
-                        <div class="control">
-                            <input ref="lastName" class="input" type="text" placeholder="e.g Doberman">
-                        </div>
-                    </div>
-                    <div class="field">
-                        <label class="label">Email</label>
-                        <div class="control">
-                            <input ref="email" class="input" type="email" placeholder="e.g. johnathanndoe@email.com">
-                        </div>
-                    </div>
-                    <div class="field">
-                        <label class="label">Phone Number</label>
-                        <div class="control">
-                            <input ref="phoneNumber" class="input" type="tel" placeholder="e.g. 876-123-4567"  pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}">
-                        </div>
-                    </div>
-                    <div class="field">
-                        <label class="label">Tax Registration Number</label>
-                        <div class="control">
-                            <input class="input" type="number" placeholder="e.g. 876-123-4567"  pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}">
-                        </div>
-                    </div>
-                    <div class="field">
-                        <div class="control">
-                            <input class="button is-primary" ref="registrationButton" @click="registerDriver" value="Submit">
-                        </div>
-                    </div>
-                </form>
+                            <form key="driver" data-form="driver" id="driver-form">
+                                <div class="field">
+                                    <label class="label">First Name</label>
+                                    <div class="control">
+                                        <input ref="firstName" class="input" type="text" placeholder="e.g Johnathan">
+                                    </div>
+                                </div><div class="field">
+                                    <label class="label">Last Name</label>
+                                    <div class="control">
+                                        <input ref="lastName" class="input" type="text" placeholder="e.g Doberman">
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label class="label">Email</label>
+                                    <div class="control">
+                                        <input ref="email" class="input" type="email" placeholder="e.g. johnathanndoe@email.com">
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label class="label">Phone Number</label>
+                                    <div class="control">
+                                        <input ref="phoneNumber" class="input" type="tel" placeholder="e.g. 876-123-4567"  pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}">
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label class="label">Tax Registration Number</label>
+                                    <div class="control">
+                                        <input class="input" type="number" placeholder="e.g. 876-123-4567"  pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}">
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <div class="control">
+                                        <input class="button is-primary" ref="registrationButton" @click="registerDriver" value="Submit">
+                                    </div>
+                                </div>
+                            </form>
 
-                <form key="owner" data-form="owner" id="owner-form">
-                    <div class="field">
-                        <label class="label">First Name</label>
-                        <div class="control">
-                            <input ref="firstName" class="input" type="text" placeholder="e.g Johnathan">
-                        </div>
-                    </div><div class="field">
-                        <label class="label">Last Name</label>
-                        <div class="control">
-                            <input ref="lastName" class="input" type="text" placeholder="e.g Doberman">
-                        </div>
-                    </div>
-                    <div class="field">
-                        <label class="label">Email</label>
-                        <div class="control">
-                            <input ref="email" class="input" type="email" placeholder="e.g. johnathanndoe@email.com">
-                        </div>
-                    </div>
-                    <div class="field">
-                        <label class="label">Phone Number</label>
-                        <div class="control">
-                            <input ref="phoneNumber" class="input" type="tel" placeholder="e.g. 876-123-4567"  pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}">
-                        </div>
-                    </div>
-                    <div class="field">
-                        <div class="control">
-                            <input class="button is-primary" ref="registrationButton" @click="registerOwner" value="Submit">
-                        </div>
-                    </div>
-                </form>
+                            <form key="owner" data-form="owner" id="owner-form">
+                                <div class="field">
+                                    <label class="label">First Name</label>
+                                    <div class="control">
+                                        <input ref="firstName" class="input" type="text" placeholder="e.g Johnathan">
+                                    </div>
+                                </div><div class="field">
+                                    <label class="label">Last Name</label>
+                                    <div class="control">
+                                        <input ref="lastName" class="input" type="text" placeholder="e.g Doberman">
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label class="label">Email</label>
+                                    <div class="control">
+                                        <input ref="email" class="input" type="email" placeholder="e.g. johnathanndoe@email.com">
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label class="label">Phone Number</label>
+                                    <div class="control">
+                                        <input ref="phoneNumber" class="input" type="tel" placeholder="e.g. 876-123-4567"  pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}">
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <div class="control">
+                                        <input class="button is-primary" ref="registrationButton" @click="registerOwner" value="Submit">
+                                    </div>
+                                </div>
+                            </form>
 
-                <form key="vehicle" data-form="vehicle" id="vehicle-form">
-                    <div class="field">
-                        <label class="label">License Plate Number</label>
-                        <div class="control">
-                            <input ref="plateNumber" class="input" type="text" placeholder="e.g. 3424323">
-                        </div>
-                    </div>
-                    <div class="field">
-                        <label class="label">Make</label>
-                        <div class="control">
-                            <input ref="make" class="input" type="text" placeholder="e.g. Toyota">
-                        </div>
-                    </div>
-                    <div class="field">
-                        <label class="label">Model</label>
-                        <div class="control">
-                            <input ref="model" class="input" type="text" placeholder="e.g. Hiace">
-                        </div>
-                    </div>
-                    <div class="field">
-                        <label class="label">Max Capacity</label>
-                        <div class="control">
-                            <input ref="capacity" class="input" type="number" placeholder="e.g. 7">
-                        </div>
-                    </div>
-                    <div class="field">
-                        <label class="label">Colour</label>
-                        <div class="control">
-                            <input ref="colour" class="input" type="text" placeholder="e.g. Orange">
-                        </div>
-                    </div>
-                    <div class="field">
-                        <label class="label">Driver ID</label>
-                        <div class="select is-fullwidth">
-                            <select ref="driverID" class="select">
-                                <option value="" selected></option>
-                                <option v-for="(driver,index) in drivers" v-html="driver.driver_id+' -- '+driver.first_name+' '+driver.last_name" :value="driver.driver_id"></option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="field">
-                        <label class="label">Owner ID</label>
-                        <div class="select is-fullwidth">
-                            <select class="select" ref="ownerID">
-                                <option value="" selected></option>
-                                <option v-for="(owner,index) in owners" v-html="owner.owner_id+' -- '+owner.first_name+' '+owner.last_name" :value="owner.owner_id"></option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="field">
-                        <div class="control">
-                            <input class="button is-primary" ref="registrationButton" @click="registerVehicle" value="Submit">
-                        </div>
-                    </div>
-                </form>
+                            <form key="vehicle" data-form="vehicle" id="vehicle-form">
+                                <div class="field">
+                                    <label class="label">License Plate Number</label>
+                                    <div class="control">
+                                        <input ref="plateNumber" class="input" type="text" placeholder="e.g. 3424323">
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label class="label">Make</label>
+                                    <div class="control">
+                                        <input ref="make" class="input" type="text" placeholder="e.g. Toyota">
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label class="label">Model</label>
+                                    <div class="control">
+                                        <input ref="model" class="input" type="text" placeholder="e.g. Hiace">
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label class="label">Max Capacity</label>
+                                    <div class="control">
+                                        <input ref="capacity" class="input" type="number" placeholder="e.g. 7">
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label class="label">Colour</label>
+                                    <div class="control">
+                                        <input ref="colour" class="input" type="text" placeholder="e.g. Orange">
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label class="label">Driver ID</label>
+                                    <div class="select is-fullwidth">
+                                        <select ref="driverID" class="select">
+                                            <option value="" selected></option>
+                                            <option v-for="(driver,index) in drivers" v-html="driver.driver_id+' -- '+driver.first_name+' '+driver.last_name" :value="driver.driver_id"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label class="label">Owner ID</label>
+                                    <div class="select is-fullwidth">
+                                        <select class="select" ref="ownerID">
+                                            <option value="" selected></option>
+                                            <option v-for="(owner,index) in owners" v-html="owner.owner_id+' -- '+owner.first_name+' '+owner.last_name" :value="owner.owner_id"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <div class="control">
+                                        <input class="button is-primary" ref="registrationButton" @click="registerVehicle" value="Submit">
+                                    </div>
+                                </div>
+                            </form>
 
-                <form key="contract" data-form="contract" id="contract-form">
-                    <div class="field">
-                        <label class="label">Contract Number</label>
-                        <div class="control">
-                            <input ref="contractNumber" class="input" type="text" placeholder="e.g. 100140-01DP/DT">
-                        </div>
-                    </div>
-                    <div class="field">
-                        <label class="label">Processing Number</label>
-                        <div class="control">
-                            <input ref="prNumber" class="input" type="text" placeholder="e.g. 10014-PG6055">
-                        </div>
-                    </div>
-                    <div class="field">
-                        <label class="label">Procurement Officer</label>
-                        <div class="control">
-                            <input ref="procurementOfficer" class="input" type="text" placeholder="e.g. Alecia Thomas, Vice President Student Services">
-                        </div>
-                    </div>
-                    <div class="field">
-                        <label class="label">Contractor</label>
-                        <div class="control">
-                            <input ref="contractor" class="input" type="text" placeholder="e.g. General Hall, Spanish Town St.Catherine">
-                        </div>
-                    </div>
-                    <div class="field">
-                        <label class="label">Issue Date</label>
-                        <div class="control">
-                            <input ref="issueDate" class="input" type="date">
-                        </div>
-                    </div>
-                    <div class="field">
-                        <label class="label">Expiration Date</label>
-                        <div class="control">
-                            <input ref="expirationDate" class="input" type="date">
-                        </div>
-                    </div>
-                    <div class="field">
-                        <label class="label">Due Date</label>
-                        <div class="control">
-                            <input ref="dueDate" class="input" type="date">
-                        </div>
-                    </div>
-                    <div class="field">
-                        <label class="label">Vehicle ID</label>
-                        <div class="select is-fullwidth">
-                            <select ref="vehicleID" class="select">
-                                <option value="" selected></option>
-                                <option v-for="(vehicle,index) in vehicles" v-html="vehicle.vehicle_id+' -- '+vehicle.plate_number" :value="vehicle.vehicle_id"></option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="field">
-                        <label class="label">Owner ID</label>
-                        <div class="select is-fullwidth">
-                            <select class="select" ref="ownerID">
-                                <option value="" selected></option>
-                                <option v-for="(owner,index) in owners" v-html="owner.owner_id+' -- '+owner.first_name+' '+owner.last_name" :value="owner.owner_id"></option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="field">
-                        <label class="label">Route ID</label>
-                        <div class="select is-fullwidth">
-                            <select class="select" ref="routeID">
-                                <option value="" selected></option>
-                                <option v-for="(route,index) in routes" v-html="route.route_id+' -- '+route.description" :value="route.route_id"></option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="field">
-                        <div class="control">
-                            <input class="button is-primary" ref="registrationButton" @click="createContract" value="Submit">
-                        </div>
-                    </div>
-                </form>
+                            <form key="contract" data-form="contract" id="contract-form">
+                                <div class="field">
+                                    <label class="label">Contract Number</label>
+                                    <div class="control">
+                                        <input ref="contractNumber" class="input" type="text" placeholder="e.g. 100140-01DP/DT">
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label class="label">Processing Number</label>
+                                    <div class="control">
+                                        <input ref="prNumber" class="input" type="text" placeholder="e.g. 10014-PG6055">
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label class="label">Procurement Officer</label>
+                                    <div class="control">
+                                        <input ref="procurementOfficer" class="input" type="text" placeholder="e.g. Alecia Thomas, Vice President Student Services">
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label class="label">Contractor</label>
+                                    <div class="control">
+                                        <input ref="contractor" class="input" type="text" placeholder="e.g. General Hall, Spanish Town St.Catherine">
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label class="label">Issue Date</label>
+                                    <div class="control">
+                                        <input ref="issueDate" class="input" type="date">
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label class="label">Expiration Date</label>
+                                    <div class="control">
+                                        <input ref="expirationDate" class="input" type="date">
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label class="label">Due Date</label>
+                                    <div class="control">
+                                        <input ref="dueDate" class="input" type="date">
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label class="label">Vehicle</label>
+                                    <div class="select is-fullwidth">
+                                        <select ref="vehicleID" class="select">
+                                            <option value="" selected></option>
+                                            <option v-for="(vehicle,index) in vehicles" v-html="vehicle.vehicle_id+' -- '+vehicle.plate_number" :value="vehicle.vehicle_id"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label class="label">Owner</label>
+                                    <div class="select is-fullwidth">
+                                        <select class="select" ref="ownerID">
+                                            <option value="" selected></option>
+                                            <option v-for="(owner,index) in owners" v-html="owner.owner_id+' -- '+owner.first_name+' '+owner.last_name" :value="owner.owner_id"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label class="label">Route</label>
+                                    <div class="select is-fullwidth">
+                                        <select class="select" ref="routeID">
+                                            <option value="" selected></option>
+                                            <option v-for="(route,index) in routes" v-html="route.route_id+' -- '+route.description" :value="route.route_id"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <div class="control">
+                                        <input class="button is-primary" ref="registrationButton" @click="createContract" value="Submit">
+                                    </div>
+                                </div>
+                            </form>
 
-                <form key="route" data-form="route" id="route-form">
-                    <div class="field">
-                        <label class="label">Starting Location</label>
-                        <div class="control">
-                            <input ref="startingLocation" class="input" type="text" placeholder="e.g. George Town">
-                        </div>
-                    </div>
-                    <div class="field">
-                        <label class="label">Destination</label>
-                        <div class="control">
-                            <input ref="destination" class="input" type="text" placeholder="e.g. UTech Papine Campus">
-                        </div>
-                    </div>
-                    <label class="label">Fee</label>
-                    <div class="field has-addons">
-                        <p class="control">
-                            <span class="button">$</span>
-                        </p>
-                        <p class="control is-expanded">
-                            <input ref="fee" class="input" type="text" placeholder="Amount of money">
-                        </p>
-                    </div>
-                    <div class="field">
-                        <div class="control">
-                            <input class="button is-primary" ref="registrationButton" @click="createRoute" value="Submit">
-                        </div>
-                    </div>
-                </form>
+                            <form key="route" data-form="route" id="route-form">
+                                <div class="field">
+                                    <label class="label">Starting Location</label>
+                                    <div class="control">
+                                        <input ref="startingLocation" class="input" type="text" placeholder="e.g. George Town">
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label class="label">Destination</label>
+                                    <div class="control">
+                                        <input ref="destination" class="input" type="text" placeholder="e.g. UTech Papine Campus">
+                                    </div>
+                                </div>
+                                <label class="label">Fee</label>
+                                <div class="field has-addons">
+                                    <p class="control">
+                                        <span class="button">$</span>
+                                    </p>
+                                    <p class="control is-expanded">
+                                        <input ref="fee" class="input" type="text" placeholder="Amount of money">
+                                    </p>
+                                </div>
+                                <div class="field">
+                                    <div class="control">
+                                        <input class="button is-primary" ref="registrationButton" @click="createRoute" value="Submit">
+                                    </div>
+                                </div>
+                            </form>
 
-                <form key="payment" data-form="payment" id="payment-form">
-                    <div class="field">
-                        <label class="label">Paid By</label>
-                        <div class="control">
-                            <input ref="done_by" class="input" type="text" value="">
+                            <form key="payment" data-form="payment" id="payment-form">
+                                <div class="field">
+                                    <label class="label">Paid By</label>
+                                    <div class="control">
+                                        <input ref="done_by" class="input" type="text" value="">
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label class="label">Payment Type</label>
+                                    <div class="select is-fullwidth">
+                                        <select ref="payment_type" class="select" required>
+                                            <option value="" selected></option>
+                                            <option value="deposit">Deposit</option>
+                                            <option value="charge">Charge</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <label class="label">Amount</label>
+                                <div class="field has-addons">
+                                    <p class="control">
+                                        <span class="button">$</span>
+                                    </p>
+                                    <p class="control is-expanded">
+                                        <input ref="amount" class="input" type="text" placeholder="Amount of money">
+                                    </p>
+                                </div>
+                                <div class="field">
+                                    <label class="label">Description</label>
+                                    <div class="control">
+                                        <textarea ref="description" class="textarea"></textarea>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label class="label">Contract</label>
+                                    <div class="select is-fullwidth">
+                                        <select ref="contractID" class="select">
+                                            <option value="" selected></option>
+                                            <option v-for="(contract,index) in contracts" v-html="contract.contract_id+' -- '+contract.contract_number" :value="contract.contract_id"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <div class="control">
+                                        <input class="button is-primary" ref="registrationButton" @click="createPayment" value="Submit">
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
-                    <div class="field">
-                        <label class="label">Payment Type</label>
-                        <div class="select is-fullwidth">
-                            <select ref="payment_type" class="select" required>
-                                <option value="" selected></option>
-                                <option value="deposit">Deposit</option>
-                                <option value="charge">Charge</option>
-                            </select>
-                        </div>
-                    </div>
-                    <label class="label">Amount</label>
-                    <div class="field has-addons">
-                        <p class="control">
-                            <span class="button">$</span>
-                        </p>
-                        <p class="control is-expanded">
-                            <input ref="amount" class="input" type="text" placeholder="Amount of money">
-                        </p>
-                    </div>
-                    <div class="field">
-                        <label class="label">Description</label>
-                        <div class="control">
-                            <textarea ref="description" class="textarea"></textarea>
-                        </div>
-                    </div>
-                    <div class="field">
-                        <label class="label">Contract ID</label>
-                        <div class="select is-fullwidth">
-                            <select ref="contractID" class="select">
-                                <option value="" selected></option>
-                                <option v-for="(contract,index) in contracts" v-html="contract.contract_id+' -- '+contract.contract_number" :value="contract.contract_id"></option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="field">
-                        <div class="control">
-                            <input class="button is-primary" ref="registrationButton" @click="createPayment" value="Submit">
-                        </div>
-                    </div>
-                </form>
-
+                </div>
             </div>
         </div>
 
@@ -474,7 +441,6 @@
                         <tr>
                             <th>Vehicle ID</th>
                             <th>License Plate Number</th>
-                            <th>Image</th>
                             <th>Colour</th>
                             <th>Make</th>
                             <th>Model</th>
@@ -488,7 +454,6 @@
                         <tr>
                             <th>Vehicle ID</th>
                             <th>License Plate Number</th>
-                            <th>Image</th>
                             <th>Colour</th>
                             <th>Make</th>
                             <th>Model</th>
@@ -502,7 +467,6 @@
                         <tr v-for="(vehicle, index) in vehicles">
                             <td style="vertical-align: middle;" v-html="vehicle.vehicle_id"></td>
                             <td style="vertical-align: middle;" v-html="vehicle.plate_number"></td>
-                            <td><img :src="'https://loremflickr.com/120/75/bus,van/all?random='+vehicle.vehicle_id"/></td>
                             <td style="vertical-align: middle;" v-html="vehicle.colour"></td>
                             <td style="vertical-align: middle;" v-html="vehicle.make"></td>
                             <td style="vertical-align: middle;" v-html="vehicle.model"></td>
@@ -521,7 +485,6 @@
                     <thead>
                         <tr>
                             <th>ID Number</th>
-                            <th>Image</th>
                             <th>First Name</th>
                             <th>Last Name</th>
                             <th>Phone Number</th>
@@ -532,7 +495,6 @@
                     <tfoot>
                         <tr>
                             <th>ID Number</th>
-                            <th>Image</th>
                             <th>First Name</th>
                             <th>Last Name</th>
                             <th>Phone Number</th>
@@ -543,7 +505,6 @@
                     <tbody>
                         <tr v-for="(user, index) in users">
                             <td style="vertical-align: middle;" v-html="user.student_id"></td>
-                            <td><img :src="'https://loremflickr.com/120/75/face/all?random='+user.student_id"/></td>
                             <td style="vertical-align: middle;" v-html="user.first_name"></td>
                             <td style="vertical-align: middle;" v-html="user.last_name"></td>
                             <td style="vertical-align: middle;" v-html="user.phone_number"></td>
@@ -741,7 +702,42 @@
 @section('bottom-body')
     <script src="https://cdn.jsdelivr.net/npm/axios@0.21.1/dist/axios.min.js" integrity="sha256-JLmknTdUZeZZ267LP9qB+/DT7tvxOOKctSKeUC2KT6E=" crossorigin="anonymous"></script>
     <script>
+        var logout = new Vue({
+            el:"#logout",
+            data(){
+                return {
 
+                }
+            },
+            mounted(){
+
+            },
+            methods:{
+                logout(){
+                    this.$refs.logoutButton.classList.add('is-loading');
+                    _this = this;
+                    axios
+                        .post("https://mp-authentication-server.herokuapp.com/logout",
+                            {headers: {
+                                "Content-type":"application/json",
+                                "Authorization": `Bearer ${window.localStorage.getItem("usu_refresh_token")}`
+                            }}
+                        )
+                        .then(function(response){
+
+                        })
+                        .catch(function(error){
+                            window.utility.refreshToken();
+                        })
+                        .then(function(response){
+                            window.localStorage.setItem("usu_access_token","");
+                            window.localStorage.setItem("usu_refresh_token","");
+                            window.localStorage.setItem("usu_username","");
+                            window.location.href = window.location.protocol + "//" + window.location.host + "/";
+                        })
+                }
+            }
+        })
         var vehicleVue = new Vue({
             el: "#vehicle-table",
             data(){
@@ -838,21 +834,21 @@
                                 </div>
                             </div>
                             <div class="field">
-                                <label class="label">Owner</label>
+                                <label class="label">Owner ID</label>
                                 <div class="control">
                                     <input class="input" oninput="window.vehicle.owner_id = this.value " value="${vehicle.owner_id}" type="text" placeholder="Text input">
                                 </div>
                             </div>
                             <div class="field">
-                                <label class="label">Driver</label>
+                                <label class="label">Driver ID</label>
                                 <div class="control">
                                     <input class="input" oninput="window.vehicle.driver_id = this.value " value="${vehicle.driver_id}" type="text" placeholder="Text input">
                                 </div>
                             </div>
                             <div class="field">
-                                <label class="label">Route</label>
+                                <label class="label">Route ID</label>
                                 <div class="control">
-                                    <input class="input" oninput="window.vehicle.route_id = this.value " value="${vehicle.route_id}" type="text" placeholder="Text input">
+                                    <input class="input" oninput="window.vehicle.route_id = this.value " value="${vehicle.route_id == null ? '' : vehicle.route_id}" type="text" placeholder="Text input">
                                 </div>
                             </div>
                         `,
@@ -917,7 +913,7 @@
             computed: {}
         });
 
-        let studentsVue = new Vue({
+        var studentsVue = new Vue({
             el: "#user-table",
             data(){
                 return {
@@ -1037,7 +1033,7 @@
                               }
                             })
                             .then(function(response){
-                                _this.$buefy.dialog.alert('Student Registered!')
+                                _this.$buefy.dialog.alert('Student Updated!')
                                 _this.getUsers();
                             })
                             .catch(function(error){
@@ -1068,6 +1064,7 @@
             }
         });
 
+        /*
         new Vue({
             el: "#frequency-chart",
             data: {},
@@ -1098,8 +1095,9 @@
             },
             computed: {}
         });
+        */
 
-        let map = new Vue({
+        var map = new Vue({
             el:'#mapbox-map',
             data:{
                 map: null
@@ -1122,7 +1120,7 @@
         });
 
         // Student Form Start
-        new Vue({
+        var studentForm = new Vue({
             el:"#student-form",
             data(){
                 return {}
@@ -1162,7 +1160,7 @@
         // Student Form Stop
 
         // Driver Form Start
-        new Vue({
+        var driverForm = new Vue({
             el:"#driver-form",
             data(){
                 return {}
@@ -1186,7 +1184,7 @@
                             }},
                         )
                         .then(function(response){
-                            _this.$buefy.dialog.alert('Register Driver!')
+                            _this.$buefy.dialog.alert('Driver Registered!')
                         })
                         .catch(function(error){
                             window.utility.refreshToken();
@@ -1197,7 +1195,7 @@
         // Driver Form Stop
 
         // Vehicle Form Start
-        let vehicleFormVue = new Vue({
+        var vehicleFormVue = new Vue({
             el:"#vehicle-form",
             data(){
                 return {
@@ -1279,7 +1277,7 @@
         // Vehicle Form Stop
 
         // Owner Form Start
-        new Vue({
+        var ownerForm = new Vue({
             el:"#owner-form",
             data(){
                 return {}
@@ -1314,7 +1312,7 @@
         // Owner Form Stop
 
         // Report Menu Start
-        new Vue({
+        var reportManager = new Vue({
             el:"#reports",
             data(){
                 return {}
@@ -1524,13 +1522,13 @@
                                 </div>
                             </div>
                             <div class="field">
-                                <label class="label">Vehicle ID</label>
+                                <label class="label">Vehicle</label>
                                 <div class="control">
                                     <input class="input" oninput="window.contract.vehicle_id = this.value " value="${contract.vehicle_id}" type="text" placeholder="Text input">
                                 </div>
                             </div>
                             <div class="field">
-                                <label class="label">Owner ID</label>
+                                <label class="label">Owner</label>
                                 <div class="control">
                                     <input class="input" oninput="window.contract.owner_id = this.value " value="${contract.owner_id}" type="text" placeholder="Text input">
                                 </div>
@@ -1723,7 +1721,7 @@
                     return axios.get("https://mp-app-server.herokuapp.com/route",{headers: {"Content-type":"application/json","Authorization": `Bearer ${window.localStorage.getItem("usu_access_token")}`}})
                 },
                 getRoutes(){
-                    _this = this;
+                    let _this = this;
                     axios
                         .get("https://mp-app-server.herokuapp.com/route",
                             {headers: {
@@ -1743,7 +1741,7 @@
         });
         // Route Table Stop
         // Contract Form Start
-        new Vue({
+        var contractForm = new Vue({
             el:"#contract-form",
             data(){
                 return {
@@ -1801,7 +1799,7 @@
         // Contract Form Stop
 
         // Route Form Start
-        new Vue({
+        var routeForm = new Vue({
             el:"#route-form",
             data(){
                 return {
@@ -1832,7 +1830,7 @@
                             }},
                         )
                         .then(function(response){
-                            _this.$buefy.dialog.alert('Route Created');
+                            _this.$buefy.dialog.alert('Route Created!');
                         })
                         .catch(function(error){
                             window.utility.refreshToken();
@@ -1866,7 +1864,7 @@
                     return axios.get("https://mp-app-server.herokuapp.com/payment_charges",{headers: {"Content-type":"application/json","Authorization": `Bearer ${window.localStorage.getItem("usu_access_token")}`}})
                 },
                 getPayments(){
-                    _this = this;
+                    let _this = this;
                     Promise.all([this.getPaymentChargesPromise(), this.getPaymentDepositsPromise()])
                         .then(function(response){
                             _this.payments = response[0].data.data.concat(response[1].data.data);
@@ -1880,7 +1878,7 @@
         });
 
         // Payment Form Start
-        new Vue({
+        var paymentForm = new Vue({
             el:"#payment-form",
             data(){
                 return {
@@ -1917,7 +1915,7 @@
                             }},
                         )
                         .then(function(response){
-                            _this.$buefy.dialog.alert('Payment Created');
+                            _this.$buefy.dialog.alert('Transaction Created!');
                         })
                         .catch(function(error){
                             window.utility.refreshToken();
@@ -1927,6 +1925,30 @@
         })
         // Payment Form Stop
 
+        var dashboard = new Vue({
+            el:"#main",
+            data:{
+                studentCount: null,
+                driverCount: null,
+                routeCount: null,
+                vehicleCount: null
+            },
+            methods:{
+                getStudentCount(){this.studentCount = window.studentsVue.users.length;},
+                getDriverCount(){this.driverCount = window.vehicleFormVue.drivers.length;},
+                getRouteCount(){this.routeCount = window.routeTable.routes.length;},
+                getVehicleCount(){this.vehicleCount = window.vehicleVue.vehicles.length;}
+            },
+            mounted(){
+
+            },
+            computed:{}
+        })
+
+        setInterval(function(){dashboard.getVehicleCount();console.log("Get Vehicles Interval");},9000);
+        setInterval(function(){dashboard.getStudentCount();console.log("Get Students Interval");},9000);
+        setInterval(function(){dashboard.getDriverCount();console.log("Get Drivers Interval");},9000);
+        setInterval(function(){dashboard.getRouteCount();console.log("Get Routes Interval");},9000);
         setInterval(function(){vehicleVue.getVehicles();console.log("Get Vehicles Interval");},9000);
         setInterval(function(){studentsVue.getUsers();console.log("Get Users Interval");},9000);
         setInterval(function(){vehicleFormVue.getDrivers();console.log("Get Drivers Interval")}, 9000);
