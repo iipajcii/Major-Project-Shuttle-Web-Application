@@ -20,7 +20,7 @@
             <div class="w-100 p-4 m-0 has-text-weight-bold" data-view="register" onclick="changeView(this)"><i class="fas fa-file-signature"></i>&nbsp;&nbsp;Register</div>
             <div class="w-100 p-4 m-0 has-text-weight-bold" data-view="routes" onclick="changeView(this);"><i class="fas fa-map"></i>&nbsp;&nbsp;Routes</div>
             <div class="w-100 p-4 m-0 has-text-weight-bold" data-view="vehicles" onclick="changeView(this)"><i class="fas fa-bus-alt"></i>&nbsp;&nbsp;Vehicles</div>
-            <div class="w-100 p-4 m-0 has-text-weight-bold" data-view="users" onclick="changeView(this)"><i class="fas fa-user-cog"></i>&nbsp;&nbsp;Users</div>
+            <div class="w-100 p-4 m-0 has-text-weight-bold" data-view="students" onclick="changeView(this)"><i class="fas fa-user-cog"></i>&nbsp;&nbsp;Students</div>
             <div class="w-100 p-4 m-0 has-text-weight-bold" data-view="contracts" onclick="changeView(this)"><i class="fas fa-file-contract"></i>&nbsp;&nbsp;Contracts</div>
             <div class="w-100 p-4 m-0 has-text-weight-bold" data-view="payments" onclick="changeView(this)"><i class="fas fa-file-invoice-dollar"></i>&nbsp;&nbsp;Payments</div>
             <div class="w-100 p-4 m-0 has-text-weight-bold" data-view="reports" onclick="changeView(this)"><i class="fas fa-file-csv"></i>&nbsp;&nbsp;Reports</div>
@@ -479,9 +479,9 @@
                 </table>
             </div>
         </div>
-        <div id="users">
+        <div id="students">
             <div class="table-container">
-                <table id="user-table" class="table has-text-centered is-bordered is-hoverable is-fullwidth" style=" white-space: nowrap;">
+                <table id="student-table" class="table has-text-centered is-bordered is-hoverable is-fullwidth" style=" white-space: nowrap;">
                     <thead>
                         <tr>
                             <th>ID Number</th>
@@ -503,13 +503,13 @@
                         </tr>
                     </tfoot>
                     <tbody>
-                        <tr v-for="(user, index) in users">
-                            <td style="vertical-align: middle;" v-html="user.student_id"></td>
-                            <td style="vertical-align: middle;" v-html="user.first_name"></td>
-                            <td style="vertical-align: middle;" v-html="user.last_name"></td>
-                            <td style="vertical-align: middle;" v-html="user.phone_number"></td>
-                            <td style="vertical-align: middle;" v-html="user.email_address"></td>
-                            <td style="vertical-align: middle;"><button class="button is-small is-grey ml-1" @click="updateStudent(user.student_id)"><i class="fas fa-pen"></i></button><button class="button is-small is-grey ml-1" @click="confirmDelete(user.student_id)"><i class="fas fa-trash"></i></button></td>
+                        <tr v-for="(student, index) in students">
+                            <td style="vertical-align: middle;" v-html="student.student_id"></td>
+                            <td style="vertical-align: middle;" v-html="student.first_name"></td>
+                            <td style="vertical-align: middle;" v-html="student.last_name"></td>
+                            <td style="vertical-align: middle;" v-html="student.phone_number"></td>
+                            <td style="vertical-align: middle;" v-html="student.email_address"></td>
+                            <td style="vertical-align: middle;"><button class="button is-small is-grey ml-1" @click="updateStudent(student.student_id)"><i class="fas fa-pen"></i></button><button class="button is-small is-grey ml-1" @click="confirmDelete(student.student_id)"><i class="fas fa-trash"></i></button></td>
                         </tr>
                     </tbody>
                 </table>
@@ -755,7 +755,7 @@
                 confirmDelete(id) {
                     this.$buefy.dialog.prompt({
                         title: 'Deleting Vehicle',
-                        message: 'Type <b><i>your account password</i></b> to permanently delete this user? This action cannot be undone!',
+                        message: 'Type <b><i>your account password</i></b> to permanently delete this vehicle? This action cannot be undone!',
                         inputAttrs: {
                             placeholder: 'e.g. your_password',
                             maxlength: 40,
@@ -914,26 +914,23 @@
         });
 
         var studentsVue = new Vue({
-            el: "#user-table",
+            el: "#student-table",
             data(){
                 return {
-                    users:null,
+                    students:null,
                     student:null
                 }
             },
             mounted(){
                 window.student = {};
                 let _this = this;
-                this.getUsers();
+                this.getStudents();
             },
             methods: {
-                editUser(){
-
-                },
                 confirmDelete(id) {
                     this.$buefy.dialog.prompt({
-                        title: 'Deleting User',
-                        message: 'Type <b><i>your account password</i></b> to permanently delete this user? This action cannot be undone!',
+                        title: 'Deleting Student',
+                        message: 'Type <b><i>your account password</i></b> to permanently delete this student? This action cannot be undone!',
                         inputAttrs: {
                             placeholder: 'e.g. your_password',
                             maxlength: 20,
@@ -943,9 +940,9 @@
                         trapFocus: true,
                         type: 'is-danger',
                         hasIcon: true,
-                        confirmText: 'Delete User',
+                        confirmText: 'Delete Student',
                         onConfirm(value){
-                            this.$buefy.toast.open('User deleted!');
+                            this.$buefy.toast.open('Student deleted!');
                             axios({
                               method: 'delete',
                               url: `https://mp-app-server.herokuapp.com/student/${id}`,
@@ -958,8 +955,8 @@
                               }
                             })
                             .then(function(response){
-                                _this.users = response.data.data;
-                                _this.getUsers();
+                                _this.students = response.data.data;
+                                _this.getStudents();
                             })
                             .catch(function(error){
                                 window.utility.refreshToken();
@@ -970,10 +967,10 @@
                 updateStudent(id){
                     let student = null;
                     let _this = this;
-                    for(let counter = 0, count = this.users.length; counter < count; counter++){
-                        if(this.users[counter].student_id == id){
-                            student = this.users[counter];
-                            window.student = this.users[counter];
+                    for(let counter = 0, count = this.students.length; counter < count; counter++){
+                        if(this.students[counter].student_id == id){
+                            student = this.students[counter];
+                            window.student = this.students[counter];
                             break;
                         }
                     }
@@ -1034,7 +1031,7 @@
                             })
                             .then(function(response){
                                 _this.$buefy.dialog.alert('Student Updated!')
-                                _this.getUsers();
+                                _this.getStudents();
                             })
                             .catch(function(error){
                                 window.utility.refreshToken();
@@ -1045,7 +1042,7 @@
                 getStudentsPromise(){
                     return axios.get("https://mp-app-server.herokuapp.com/student",{headers: {"Content-type":"application/json","Authorization": `Bearer ${window.localStorage.getItem("usu_access_token")}`}})
                 },
-                getUsers(){
+                getStudents(){
                     let _this = this;
                     axios
                         .get("https://mp-app-server.herokuapp.com/student",
@@ -1055,7 +1052,7 @@
                             }}
                         )
                         .then(function(response){
-                            _this.users = response.data.data;
+                            _this.students = response.data.data;
                         })
                         .catch(function(error){
                             window.utility.refreshToken();
@@ -1427,7 +1424,7 @@
                 confirmDelete(id) {
                     this.$buefy.dialog.prompt({
                         title: 'Deleting Contract',
-                        message: 'Type <b><i>your account password</i></b> to permanently delete this user? This action cannot be undone!',
+                        message: 'Type <b><i>your account password</i></b> to permanently delete this student? This action cannot be undone!',
                         inputAttrs: {
                             placeholder: 'e.g. your_password',
                             maxlength: 40,
@@ -1934,7 +1931,7 @@
                 vehicleCount: null
             },
             methods:{
-                getStudentCount(){this.studentCount = window.studentsVue.users.length;},
+                getStudentCount(){this.studentCount = window.studentsVue.students.length;},
                 getDriverCount(){this.driverCount = window.vehicleFormVue.drivers.length;},
                 getRouteCount(){this.routeCount = window.routeTable.routes.length;},
                 getVehicleCount(){this.vehicleCount = window.vehicleVue.vehicles.length;}
@@ -1950,7 +1947,7 @@
         setInterval(function(){dashboard.getDriverCount();console.log("Get Drivers Interval");},9000);
         setInterval(function(){dashboard.getRouteCount();console.log("Get Routes Interval");},9000);
         setInterval(function(){vehicleVue.getVehicles();console.log("Get Vehicles Interval");},9000);
-        setInterval(function(){studentsVue.getUsers();console.log("Get Users Interval");},9000);
+        setInterval(function(){studentsVue.getStudents();console.log("Get Students Interval");},9000);
         setInterval(function(){vehicleFormVue.getDrivers();console.log("Get Drivers Interval")}, 9000);
         setInterval(function(){vehicleFormVue.getOwners();console.log("Get Owners Interval")}, 9000);
         setInterval(function(){contractsVue.getContracts();console.log("Get Contracts Interval");},9000);
@@ -1960,7 +1957,7 @@
         vehicleVue.getVehicles();
         vehicleFormVue.getOwners();
         vehicleFormVue.getDrivers();
-        studentsVue.getUsers();
+        studentsVue.getStudents();
         routeTable.getRoutes();
         paymentTable.getPayments();
     </script>
